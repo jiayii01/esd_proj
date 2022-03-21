@@ -108,8 +108,6 @@ def create_job(jobID):
               "message": "An error occurred creating the job."
             }
         ), 500
-    # db.session.add(job)
-    # db.session.commit()
 
     return jsonify(
         {
