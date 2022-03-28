@@ -25,8 +25,9 @@ class Job(db.Model):
     pickUpLocation = db.Column(db.String(1024), nullable=False)
     destination = db.Column(db.String(1024), nullable=False)
     freelancerID = db.Column(db.String(6))
+    distance = db.Column(db.String(11), nullable=False)
 
-    def __init__(self, jobID, name, price, description, status, deadline, pickUpLocation, destination, freelancerID):
+    def __init__(self, jobID, name, price, description, status, deadline, pickUpLocation, destination, freelancerID, distance):
         self.jobID = jobID
         self.name = name
         self.price = price
@@ -37,9 +38,10 @@ class Job(db.Model):
         self.pickUpLocation = pickUpLocation
         self.destination = destination
         self.freelancerID = freelancerID
+        self.distance = distance
 
     def json(self):
-        return {"jobID": self.jobID, "name": self.name, "price": self.price, "description": self.description, "status": self.status, "deadline": self.deadline, "pickUpLocation": self.pickUpLocation, "destination": self.destination, "freelancerID": self.freelancerID}
+        return {"jobID": self.jobID, "name": self.name, "price": self.price, "description": self.description, "status": self.status, "deadline": self.deadline, "pickUpLocation": self.pickUpLocation, "destination": self.destination, "freelancerID": self.freelancerID, "distance": self.distance}
         # return {"jobID": self.jobID, "name": self.name, "price": self.price, "description": self.description, "status": self.status}
 
 @app.route("/job")
@@ -93,6 +95,17 @@ def create_job(jobID):
         ), 400
 
     data = request.get_json()
+    
+    url = "https://maps.googleapis.com/maps/api/directions/json?origin="+data["pickUpLocation"][:6]+",Singapore&destination="+data["destination"][:6]+",Singapore&key=AIzaSyCR5bhybFFnGTii7iY70BOShkkKnYTHj2E"
+    payload={}
+    headers = {}
+    output = requests.request("GET", url, headers=headers, data=payload)
+    finaloutput = output.json()
+    if not finaloutput["routes"]:
+        data["distance"] = "unavailable"
+    else:
+        data["distance"] = finaloutput["routes"][0]["legs"][0]["distance"]["text"]
+        
     job = Job(jobID, **data)
 
     try:
@@ -136,6 +149,8 @@ def update_job(jobID):
             job.destination = data['destination']
           if col == "freelancerID":
             job.freelancerID = data['freelancerID']
+          if col == "distance":
+            job.distance = data['distance']
 
         db.session.commit()
         return jsonify(
