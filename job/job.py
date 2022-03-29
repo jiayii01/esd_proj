@@ -33,7 +33,7 @@ class Job(db.Model):
         self.price = price
         self.description = description
         self.status = status
-        # self.dateTime = dateTime
+        self.deliveryDate = deliveryDate
         self.deadline = deadline
         self.pickUpLocation = pickUpLocation
         self.destination = destination
@@ -41,7 +41,7 @@ class Job(db.Model):
         self.distance = distance
 
     def json(self):
-        return {"jobID": self.jobID, "name": self.name, "price": self.price, "description": self.description, "status": self.status, "deadline": self.deadline, "pickUpLocation": self.pickUpLocation, "destination": self.destination, "freelancerID": self.freelancerID, "distance": self.distance}
+        return {"jobID": self.jobID, "name": self.name, "price": self.price, "description": self.description, "status": self.status, "deliveryDate": self.deliveryDate, "pickUpLocation": self.pickUpLocation, "destination": self.destination, "freelancerID": self.freelancerID, "distance": self.distance}
         # return {"jobID": self.jobID, "name": self.name, "price": self.price, "description": self.description, "status": self.status}
 
 @app.route("/job")
