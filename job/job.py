@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from os import environ
+import requests
 # from flask_cors import CORS
 
 app = Flask(__name__)
@@ -105,7 +106,7 @@ def create_job(jobID):
         data["distance"] = "unavailable"
     else:
         data["distance"] = finaloutput["routes"][0]["legs"][0]["distance"]["text"]
-        
+        data["status"] = "NEW"
     job = Job(jobID, **data)
 
     try:

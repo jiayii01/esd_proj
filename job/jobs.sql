@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `jobs` (
   `name` varchar(64) NOT NULL,
   `price` float(4,2) NOT NULL DEFAULT 0,
   `description` varchar(200) NOT NULL,
-  `status` varchar(10) DEFAULT 'NEW',
+  `status` varchar(10) NOT NULL DEFAULT 'NEW',
   `deliveryDate` date NOT NULL,
   `deadline` date NOT NULL,
   `pickUpLocation` varchar(1024) NOT NULL,
