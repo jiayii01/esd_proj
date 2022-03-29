@@ -20,14 +20,14 @@ class Job(db.Model):
     price = db.Column(db.Float(precision=2), nullable=False)
     description = db.Column(db.String(200), nullable=False)
     status = db.Column(db.String(10))
-    # dateTime = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    deliveryDate = db.Column(db.Date, nullable=False)
     deadline = db.Column(db.Date, nullable=False)
     pickUpLocation = db.Column(db.String(1024), nullable=False)
     destination = db.Column(db.String(1024), nullable=False)
     freelancerID = db.Column(db.String(6))
     distance = db.Column(db.String(11), nullable=False)
 
-    def __init__(self, jobID, name, price, description, status, deadline, pickUpLocation, destination, freelancerID, distance):
+    def __init__(self, jobID, name, price, description, status, deliveryDate, deadline, pickUpLocation, destination, freelancerID, distance):
         self.jobID = jobID
         self.name = name
         self.price = price
@@ -143,6 +143,8 @@ def update_job(jobID):
             job.description = data['description']
           if col == "status":
             job.status = data['status']
+          if col == "deliveryDate":
+            job.deliveryDate = data['deliveryDate']
           if col == "deadline":
             job.deadline = data['deadline']
           if col == "destination":
