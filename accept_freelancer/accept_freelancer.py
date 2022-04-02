@@ -23,12 +23,12 @@ def accept_freelancer():
     if request.is_json:
         try:
             #1. Get the bidding id 123 for eg
-            # bidding = chosen_Bidding("123")
-            bidding = request.get_json()
-            print("\nReceived a bid in JSON:", bidding)
-
+            data = request.get_json()
+            print(data)
+            bidding = chosen_Bidding(data['biddingID'])
+            print(bidding)
             #2. Update the bidding status
-            updateBiddingStatus(bidding)
+            updateBiddingStatus(bidding.id)
 
             job = request.get_json()   #get the job data 
             print("\n Accept freelancer")
@@ -58,7 +58,7 @@ def accept_freelancer():
     }), 400
 
 
-def updateJobStatus(job,id):
+def updateJobStatus(id):
     # Invoke the job microservice
     print('\n-----Invoking job microservice-----')
     job_result = invoke_http(job_URL+"/"+id, method='PUT', json=job)
@@ -93,13 +93,13 @@ def updateBiddingStatus(bidding):
 def chosen_Bidding(id):   #retrieve bidding info that we chose by bidding ID
    # Invoke the bidding microservice
     print('\n-----Invoking bidding microservice-----')
-    bidding_result = invoke_http(bidding_URL+"/biddingID/"+id, method='GET')
+    bidding_result = invoke_http(bidding_URL+"/biddingID/"+ str(id), method='GET')
     print('chosen result:', bidding_result)
   
     # Check the order result; if a failure, send it to the error microservice.
     code = bidding_result["code"]
     message = json.dumps(bidding_result)
-
+    
     if code not in range(200, 300):
         print("error")
     else: 
