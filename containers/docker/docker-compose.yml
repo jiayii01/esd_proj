@@ -9,31 +9,31 @@ services:
     image: hullojalapenos/bidding:1.0
     restart: always
     environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/bidding
+      dbURL: mysql+mysqlconnector://root@localhost:3306/bidding
   #################################
-  # Freelancer: The Freelancer microservice
+  # Job: The Job microservice
   #################################
-  freelancer:
-    image: hullojalapenos/freelancer:1.0
+  job:
+    image: hullojalapenos/job:1.0
     restart: always
     environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/freelancer
+      dbURL: mysql+mysqlconnector://root@localhost:3306/job
   #################################
   # notification: The notification microservice
   #################################
-  notification:
-    image: hullojalapenos/notification:1.0
-    restart: always
-    environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/notification
+  # notification:
+  #   image: hullojalapenos/notification:1.0
+  #   restart: always
+  #   environment:
+  #     dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/notification
   #################################
   # accept_freelancer: The accept freelancer complex microservice
   #################################
-  accept_freelancer:
-    image: hullojalapenos/accept_freelancer:1.0
-    restart: always
-    environment:
-        dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/accept_freelancer
+  # accept_freelancer:
+  #   image: hullojalapenos/accept_freelancer:1.0
+  #   restart: always
+  #   environment:
+  #       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/accept_freelancer
 
 
 

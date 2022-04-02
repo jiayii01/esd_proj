@@ -6,7 +6,7 @@ import requests
 # from flask_cors import CORS
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/jobs'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/jobs'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -45,7 +45,7 @@ class Job(db.Model):
         return {"jobID": self.jobID, "name": self.name, "price": self.price, "description": self.description, "status": self.status, "deliveryDate": self.deliveryDate, "pickUpLocation": self.pickUpLocation, "destination": self.destination, "freelancerID": self.freelancerID, "distance": self.distance}
         # return {"jobID": self.jobID, "name": self.name, "price": self.price, "description": self.description, "status": self.status}
 
-@app.route("/job")
+@app.route("/jobs")
 def get_all():
     joblist = Job.query.all()
     if len(joblist):
@@ -56,7 +56,7 @@ def get_all():
                   "jobs": [job.json() for job in joblist]
               }
             }
-        )
+        )  
     return jsonify(
         {
           "code": 404,
@@ -64,7 +64,7 @@ def get_all():
         }
     ), 404
 
-@app.route("/job/<int:jobID>")
+@app.route("/jobs/<int:jobID>")
 def find_by_jobID(jobID):
     job = Job.query.filter_by(jobID=jobID).first()
     if job:
@@ -82,7 +82,7 @@ def find_by_jobID(jobID):
     ), 404
 
 
-@app.route("/job/<int:jobID>", methods=['POST'])
+@app.route("/jobs/<int:jobID>", methods=['POST'])
 def create_job(jobID):
     if (Job.query.filter_by(jobID=jobID).first()):
         return jsonify(
@@ -130,7 +130,7 @@ def create_job(jobID):
         }
     ), 201
 
-@app.route("/job/<int:jobID>", methods=['PUT'])
+@app.route("/jobs/<int:jobID>", methods=['PUT'])
 def update_job(jobID):
     job = Job.query.filter_by(jobID=jobID).first()
     if job:

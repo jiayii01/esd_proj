@@ -7,7 +7,7 @@ import json
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/bidding'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/bidding'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
@@ -19,16 +19,16 @@ class Bidding(db.Model):
     __tablename__ = 'bidding'
 
     biddingID = db.Column(db.Integer, primary_key=True,autoincrement=True)
-    userID = db.Column(db.String(6), nullable=False)
+    # userID = db.Column(db.String(6), nullable=False)
     freelancerID = db.Column(db.String(6))
     jobID = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.String(10))
     dateTime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     price = db.Column(db.Float(precision=2), nullable=False)
 
-    def __init__(self, biddingID, userID, freelancerID, jobID, status, dateTime, price):
+    def __init__(self, biddingID, freelancerID, jobID, status, dateTime, price):
         self.biddingID= biddingID
-        self.userID = userID
+        # self.userID = userID
         self.freelancerID = freelancerID
         self.jobID = jobID
         self.status = status
@@ -38,7 +38,7 @@ class Bidding(db.Model):
 
     def json(self):
         return {"biddingID": self.biddingID,
-         "userID": self.userID, 
+        #  "userID": self.userID, 
          "freelancerID": self.freelancerID,
          "jobID": self.jobID,
           "status": self.status,
@@ -173,8 +173,8 @@ def update_bid(biddingID):
         for item in data:
             if item == 'biddingID':
                 bid.biddingID = data['biddingID']
-            if item =='userID':
-                bid.userID = data['userID']
+            # if item =='userID':
+            #     bid.userID = data['userID']
             if item =='freelancerID':
                 bid.freelancerID = data['freelancerID']
             if item =='jobID':
