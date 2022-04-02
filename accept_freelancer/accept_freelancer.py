@@ -13,9 +13,8 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-
-bidding_URL = "http://localhost:5001/bidding"
-job_URL = "http://localhost:5002/job"
+job_URL = "http://localhost:5001/job"
+bidding_URL = "http://localhost:5003/bidding"
 
 
 @app.route("/accept_freelancer", methods=['POST'])   

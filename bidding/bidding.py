@@ -7,7 +7,7 @@ import json
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/bidding'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/bidding'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
@@ -263,4 +263,4 @@ def get_freelancer(jobID):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5003, debug=True)
