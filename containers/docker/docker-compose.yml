@@ -6,18 +6,18 @@ services:
   # Bidding: The Bidding microservice
   #################################
   bidding:
-    image: hullojalapenos/bidding:1.0
+    image: jiayii01/bidding:1.0
     restart: always
     environment:
-      dbURL: mysql+mysqlconnector://root@localhost:3306/bidding
+      dbURL: mysql+mysqlconnector://root:root@localhost:3306/bidding
   #################################
   # Job: The Job microservice
   #################################
   job:
-    image: hullojalapenos/job:1.0
+    image: jiayii01/job:1.0
     restart: always
     environment:
-      dbURL: mysql+mysqlconnector://root@localhost:3306/job
+      dbURL: mysql+mysqlconnector://root:root@localhost:3306/jobs
   #################################
   # notification: The notification microservice
   #################################
