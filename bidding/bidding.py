@@ -162,8 +162,6 @@ def create_bids(jobID,freelancerID):
             "data": bid.json(),
             "message": "Bid has successfully been created"
         },
-        
-
     ), 201
 
 #update bid
@@ -188,8 +186,6 @@ def update_bid(biddingID):
             if item =='price':
                 bid.price = data['price']
         
-
-    
         db.session.commit()
         return jsonify(
             {
@@ -256,11 +252,6 @@ def get_freelancer(jobID):
         ), 404
             
         
-        
-
-
-
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5003, debug=True)

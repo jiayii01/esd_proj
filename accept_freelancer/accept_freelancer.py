@@ -24,17 +24,20 @@ def accept_freelancer():
         try:
             #1. Get the bidding id 123 for eg
             data = request.get_json()
-            print(data)
-            bidding = chosen_Bidding(data['biddingID'])
-            print(bidding)
+            # print(data)
+            bidInfo = chosenBidding(data['biddingID'])
+            print(bidInfo)
             #2. Update the bidding status
-            updateBiddingStatus(bidding.id)
-
-            job = request.get_json()   #get the job data 
-            print("\n Accept freelancer")
-            # do the actual work
-            # 3. Update job status to "filled"
-            result =  updateJobStatus(job,"1")
+            newStatus = updateBiddingStatus(data)
+            print(newStatus)
+            # # job = request.get_json()   #get the job data 
+            print("\nAccept freelancer")
+            # # # do the actual work
+            # # # 3. Update job status to "filled"
+            jobChosen = newStatus['data']["jobID"]
+            freelancerChosen = newStatus['data']["freelancerID"]
+            print(jobChosen, freelancerChosen)
+            result =  updateJobStatus(jobChosen,freelancerChosen)
             print('\n------------------------')
             print('\nresult: ', result)
             return jsonify(result), result["code"]
@@ -58,10 +61,14 @@ def accept_freelancer():
     }), 400
 
 
-def updateJobStatus(id):
+def updateJobStatus(jobId,freelancerId):
     # Invoke the job microservice
     print('\n-----Invoking job microservice-----')
-    job_result = invoke_http(job_URL+"/"+id, method='PUT', json=job)
+    freelancerAndStatus = {
+      "freelancerID": freelancerId,
+      "status": "Filled"
+    }
+    job_result = invoke_http(job_URL+"/"+str(jobId), method='PUT', json=freelancerAndStatus)
     print('update_result:', job_result)
   
     # Check the job result; if a failure, send it to the error microservice.
@@ -72,12 +79,16 @@ def updateJobStatus(id):
         print("error")
     else: 
         print("successful")
+        return job_result
 
 
 def updateBiddingStatus(bidding):
     # Invoke the bidding microservice
     print('\n-----Invoking bidding microservice-----')
-    bidding_result = invoke_http(bidding_URL+"/update", method='PUT', json=bidding)
+    biddingStatus = {
+      "status": "Chosen"
+    }
+    bidding_result = invoke_http(bidding_URL+"/update/"+str(bidding["biddingID"]), method='PUT', json=biddingStatus)
     print('update_result:', bidding_result)
   
     # Check the order result; if a failure, send it to the error microservice.
@@ -88,9 +99,10 @@ def updateBiddingStatus(bidding):
         print("error")
     else: 
         print("successful")
+        return bidding_result
 
 
-def chosen_Bidding(id):   #retrieve bidding info that we chose by bidding ID
+def chosenBidding(id):   #retrieve bidding info that we chose by bidding ID
    # Invoke the bidding microservice
     print('\n-----Invoking bidding microservice-----')
     bidding_result = invoke_http(bidding_URL+"/biddingID/"+ str(id), method='GET')
