@@ -23,7 +23,9 @@ def accept_freelancer():
     if request.is_json:
         try:
             #1. Get the bidding id 123 for eg
-            bidding = chosen_Bidding("123")
+            # bidding = chosen_Bidding("123")
+            bidding = request.get_json()
+            print("\nReceived a bid in JSON:", bidding)
 
             #2. Update the bidding status
             updateBiddingStatus(bidding)
@@ -32,7 +34,7 @@ def accept_freelancer():
             print("\n Accept freelancer")
             # do the actual work
             # 3. Update job status to "filled"
-            result =  updateJobStatus(job,"123")
+            result =  updateJobStatus(job,"1")
             print('\n------------------------')
             print('\nresult: ', result)
             return jsonify(result), result["code"]
@@ -159,7 +161,7 @@ for amqp
 
 # Execute this program if it is run as a main script (not by 'import')
 if __name__ == "__main__":
-    print("This is flask " + os.path.basename(__file__) + " for placing an order...")
+    print("This is flask " + os.path.basename(__file__) + " for accepting a freelancer...")
     app.run(host="0.0.0.0", port=5100, debug=True)
     # Notes for the parameters: 
     # - debug=True will reload the program automatically if a change is detected;
