@@ -26,6 +26,14 @@ services:
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/notification
+  #################################
+  # accept_freelancer: The accept freelancer complex microservice
+  #################################
+  accept_freelancer:
+    image: hullojalapenos/accept_freelancer:1.0
+    restart: always
+    environment:
+        dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/accept_freelancer
 
 
 
