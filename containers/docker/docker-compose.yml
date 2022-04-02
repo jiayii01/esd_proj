@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+
+  #################################
+  # Bidding: The Bidding microservice
+  #################################
+  bidding:
+    image: hullojalapenos/bidding:1.0
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/bidding
+  #################################
+  # Freelancer: The Freelancer microservice
+  #################################
+  freelancer:
+    image: hullojalapenos/freelancer:1.0
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/freelancer
+  #################################
+  # notification: The notification microservice
+  #################################
+  notification:
+    image: hullojalapenos/notification:1.0
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/notification
+
+
+
