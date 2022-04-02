@@ -13,8 +13,8 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-job_URL = "http://localhost:5001/job"
-bidding_URL = "http://localhost:5003/bidding"
+job_URL = "http://localhost:5001/jobs"
+bidding_URL = "http://localhost:5002/bidding"
 
 
 @app.route("/accept_freelancer", methods=['POST'])   
@@ -22,24 +22,22 @@ def accept_freelancer():
     # Simple check of input format and data of the request are JSON
     if request.is_json:
         try:
-            #1. Get the bidding id 123 for eg
+            #1. Get the bidding info
             data = request.get_json()
-            # print(data)
-            bidInfo = chosenBidding(data['biddingID'])
-            print(bidInfo)
+
             #2. Update the bidding status
             newStatus = updateBiddingStatus(data)
-            print(newStatus)
-            # # job = request.get_json()   #get the job data 
             print("\nAccept freelancer")
+            
             # # # do the actual work
             # # # 3. Update job status to "filled"
-            jobChosen = newStatus['data']["jobID"]
-            freelancerChosen = newStatus['data']["freelancerID"]
+            jobChosen = newStatus['data']["jobID"]    #chosen jobID
+            freelancerChosen = newStatus['data']["freelancerID"]   #chosen freelancerID
             print(jobChosen, freelancerChosen)
             result =  updateJobStatus(jobChosen,freelancerChosen)
             print('\n------------------------')
             print('\nresult: ', result)
+
             return jsonify(result), result["code"]
 
         except Exception as e:
@@ -51,7 +49,7 @@ def accept_freelancer():
 
             return jsonify({
                 "code": 500,
-                "message": "place_order.py internal error: " + ex_str
+                "message": "accept_freelancer.py internal error: " + ex_str
             }), 500
 
     # if reached here, not a JSON request.
@@ -64,10 +62,12 @@ def accept_freelancer():
 def updateJobStatus(jobId,freelancerId):
     # Invoke the job microservice
     print('\n-----Invoking job microservice-----')
+
     freelancerAndStatus = {
       "freelancerID": freelancerId,
       "status": "Filled"
     }
+
     job_result = invoke_http(job_URL+"/"+str(jobId), method='PUT', json=freelancerAndStatus)
     print('update_result:', job_result)
   
@@ -85,13 +85,15 @@ def updateJobStatus(jobId,freelancerId):
 def updateBiddingStatus(bidding):
     # Invoke the bidding microservice
     print('\n-----Invoking bidding microservice-----')
+
     biddingStatus = {
       "status": "Chosen"
     }
+
     bidding_result = invoke_http(bidding_URL+"/update/"+str(bidding["biddingID"]), method='PUT', json=biddingStatus)
-    print('update_result:', bidding_result)
+    print('update bid result:', bidding_result)
   
-    # Check the order result; if a failure, send it to the error microservice.
+    # Check the bidding result; if a failure, send it to the error microservice.
     code = bidding_result["code"]
     message = json.dumps(bidding_result)
 
@@ -104,9 +106,9 @@ def updateBiddingStatus(bidding):
 
 def chosenBidding(id):   #retrieve bidding info that we chose by bidding ID
    # Invoke the bidding microservice
-    print('\n-----Invoking bidding microservice-----')
+    print('\n-----Invoking choose bidding microservice-----')
     bidding_result = invoke_http(bidding_URL+"/biddingID/"+ str(id), method='GET')
-    print('chosen result:', bidding_result)
+    print('chosen bidding result:', bidding_result)
   
     # Check the order result; if a failure, send it to the error microservice.
     code = bidding_result["code"]
