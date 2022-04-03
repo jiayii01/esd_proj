@@ -6,7 +6,8 @@ import requests
 # from flask_cors import CORS
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/jobs'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/jobs'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -43,7 +44,6 @@ class Job(db.Model):
 
     def json(self):
         return {"jobID": self.jobID, "name": self.name, "price": self.price, "description": self.description, "status": self.status, "deliveryDate": self.deliveryDate, "pickUpLocation": self.pickUpLocation, "destination": self.destination, "freelancerID": self.freelancerID, "distance": self.distance}
-        # return {"jobID": self.jobID, "name": self.name, "price": self.price, "description": self.description, "status": self.status}
 
 @app.route("/jobs")
 def get_all():

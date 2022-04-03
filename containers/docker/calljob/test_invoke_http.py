@@ -20,7 +20,8 @@ job_details = {
     "name": "Cake Delivery",
     "pickUpLocation": "512456 Ubi Street 12 Blk 456 #11-28",
     "price": 21.0,
-    "status": "NEW"
+    "status": "NEW",
+    "freelancerID": None
 }
 create_results = invoke_http(
         job_URL + "/" + str(jobID), method='POST', 
