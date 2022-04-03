@@ -15,8 +15,6 @@
         <!-- bootstrap cdn -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-        <script src='https://cdn.jsdelivr.net/npm/vue@3.0.2/dist/vue.global.js'></script>
-
     </head>
     <body>
         <!-- Navigation-->
@@ -51,38 +49,38 @@
         </nav>
 
         <!-- Header-->
-        <header class="bg-image py-3" style="background-image: url(img/bid.png);">
+        <header class="bg-image py-3" style="background-image: url(img/bidded.png);">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Bid for a Job</h1>
-                    <p class="lead fw-normal text-white-80 mb-0">Browse jobs and place a bid amount for any of the jobs below!</p>
+                    <h1 class="display-4 fw-bolder">Bidded Jobs</h1>
+                    <p class="lead fw-normal text-white-80 mb-0">View jobs that you have bidded for!</p>
                 </div>
             </div>
         </header>
 
         <!-- Section-->
         <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5" id="app">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">'
-                    <div v-for="job in allJobs" class="col mb-5" >
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    
+                    <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Job details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Job name-->
-                                    <h5 class="fw-bolder">{{job.name}}</h5>
+                                    <h5 class="fw-bolder">Job 1</h5>
                                     <!-- Job price-->
-                                    ${{job.price}}
+                                    $40.00 - $80.00
                                     <!-- Job Deadline -->
                                     <br>
                                     Deadline:
-                                    {{job.deadline}}
                                 </div>
                             </div>
                             <!-- Job actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center">
-                                    <a class="btn btn-outline-dark mt-auto" href="jobdetails.html" @click="chooseJob(job.jobID)">View Job</a>
+                                    <a class="btn btn-outline-dark mt-auto" href="jobdetails.html">View Job</a>
                                 </div>
                                 
                             </div>
@@ -95,67 +93,12 @@
         </section>
         
         <!-- Footer-->
-        <footer class="py-5 bg-image" style="background-image: url(img/bid.png)">
+        <footer class="py-5 bg-image" style="background-image: url(img/bidded.png);">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; DeliveRiders 2022</p></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
-        <!-- jQuery -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-
-        <!-- linking to db -->
-        <script>
-         const getAllJobs = "http://127.0.0.1:5001/jobs";
-        
-        const app = Vue.createApp({
-            computed: {
-                hasBooks: function () {
-                    return this.books.length > 0;
-                }
-            },
-            data() {
-                return {
-                    error: [],
-                    allJobs: [],
-                };
-            },
-            methods: {
-                    chooseJob(id){
-
-                    localStorage.id = id;
-                    
-                    }
-                },
-            created () {
-                // on Vue instance created, load the book list
-                const response =
-                    fetch(getAllJobs ,{
-                      method: "GET",
-                      mode: 'cors'
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(data)
-                            if (data.code === 404) {
-                                // no book in db
-                                this.error = data.message;
-                                
-                            } else {
-                                this.books = "correct";
-                                this.allJobs = data.data.jobs
-                                console.log(data.data.jobs)
-                            }
-                        })
-                        .catch(error => {
-                            console.log(this.message + error);
-                        });
-                
-            }
-        });
-        const vm = app.mount('#app');
-    </script>
     </body>
 </html>

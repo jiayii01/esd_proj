@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DeliveRiders - Bid: Job Name</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+        <!-- bootstrap cdn -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    </head>
+<body>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="#!">DeliveRiders</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <!-- navbar -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Post a Job</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="postjob.html">Post a Job</a></li>
+                                <li><a class="dropdown-item" href="accept.html">Posted Jobs</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Bid for a Job</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="bidjob.html">Bid for a Job</a></li>
+                                <li><a class="dropdown-item" href="bidded.html">Bidded Jobs</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="d-flex">
+                        <!-- login -->
+                        <a href="login.html" class="btn btn-outline-dark">Login</a>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    
+        <!-- header -->
+        <header class="bg-image py-3" style="background-image: url(img/placebid.jpeg);">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Place Bid</h1>
+                    <p class="lead fw-normal text-white-80 mb-0">Place your bid amount</p>
+                </div>
+            </div>
+        </header>
+
+    <section>
+        <div class="container" id="main-container">
+            <div class="col-6 p-3 mx-auto">
+
+                <div class="card">
+                    <!-- Job Name -->
+                    <h2 class="card-header" id="name">
+                    </h2>
+                    <!-- Job details-->
+                    <div class="card-body">
+                        <!-- Description -->
+                        <div>
+                            <p class="card-title py-2"><strong>Description:</strong></p>
+                            <p id="jobDesc"></p>
+                        </div>
+                        <hr class="dropdown-divider" />
+                        <!-- Details -->
+                        <div>
+                            <p>
+                                <strong>Deadline:</strong>
+                                <span id="deadline"></span>
+                            </p>
+                            <p> 
+                                <strong>Pickup Location:</strong> 
+                                <span id="pickup"></span>
+                            </p>
+                            <p> 
+                                <strong>Destination:</strong>
+                                <span id="destination"></span> 
+                            </p>
+                            <p> 
+                                <strong>Distance:</strong> 
+                                <span id="distance"></span>
+                            </p>
+                            <p> 
+                                <strong>Current Average Bid:</strong>
+                                <span id="avgbid"></span>
+                            </p>
+                            <p> 
+                                <strong>Maximum Bid: </strong>
+                                <span id="maxbid"></span>
+                            </p>
+                        </div>
+                        <hr class="dropdown-divider" />
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- Footer-->
+    <footer class="py-5 bg-image" style="background-image: url(img/placebid.jpeg);">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; DeliveRiders 2022</p></div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>    
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- linking to db -->
+    <script>
+        // Helper function to display error message
+        function showError(message) {
+            $('#main-container')
+                .append("<label>"+message+"</label>");
+        } 
+
+        // anonymous async function 
+        // - using await requires the function that calls it to be async
+        $(async() => {           
+            // Change serviceURL to your own
+            // get job by jobID -> route '/jobs/jobID'
+            var serviceURL = "http://localhost:5001/jobs/{{ jobID }}";
+            try {
+                const response =
+                    await fetch(
+                    serviceURL, { method: 'GET' }
+                );
+
+                const result = await response.json();
+                if (response.status === 200) {
+                    // success case
+                    var details = result.data; 
+                    
+                    $( "#name" ).html( details.name );
+                    $( "#jobDesc" ).html( details.description );
+                    $( "#deadline" ).html( details.deadline );
+                    $( "#pickup" ).html( details.pickUpLocation );
+                    $( "#destination" ).html( details.destination );
+                    $( "#maxbid" ).html( details.price );
+                    
+                    } else if (response.status == 404) {
+                        // No books
+                        showError(result.message);
+                    } else {
+                        // unexpected outcome, throw the error
+                        throw response.status;
+                    }
+                } catch (error) {
+                    // Errors when calling the service; such as network error, 
+                    // service offline, etc
+                    showError
+        ('There is a problem retrieving job data, please try again later.<br />' + error);
+                } // error
+        });
+    </script>
+</body>
+</html>
