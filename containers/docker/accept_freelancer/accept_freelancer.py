@@ -77,16 +77,19 @@ def updateJobStatus(jobId,freelancerId):
     code = job_result["code"]
     message = json.dumps(job_result)
 
+    amqp_setup.check_setup()
+
     #amqp handling
     if code not in range(200, 300):
         # Inform the error microservice
-        #print('\n\n-----Invoking error microservice as update job status fails-----')
+
         print('\n\n-----Publishing the (job error) message with routing_key=job.error-----')
 
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="job.error", 
             body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
         # make message persistent within the matching queues until it is received by some receiver 
         # (the matching queues have to exist and be durable and bound to the exchange)
+
 
         # - reply from the invocation is not used;
         # continue even if this invocation fails        
@@ -108,7 +111,6 @@ def updateJobStatus(jobId,freelancerId):
         #print('\n\n-----Invoking activity_log microservice-----')
         print('\n\n-----Publishing the (job info) message with routing_key=job.info-----')        
 
-        # invoke_http(activity_log_URL, method="POST", json=order_result)            
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="job.info", 
             body=message)
     
@@ -132,6 +134,8 @@ def updateBiddingStatus(bidding):
     # Check the bidding result; if a failure, send it to the error microservice.
     code = bidding_result["code"]
     message = json.dumps(bidding_result)
+
+    amqp_setup.check_setup()
 
     if code not in range(200, 300):
         # Inform the error microservice
@@ -163,8 +167,8 @@ def updateBiddingStatus(bidding):
         print('\n\n-----Publishing the (bidding info) message with routing_key=bidding.info-----')        
 
         # invoke_http(activity_log_URL, method="POST", json=order_result)            
-        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="bidding.info", 
-            body=message)
+#        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="bidding.info", 
+#            body=message)
     
         print("\nbidding published to RabbitMQ Exchange.\n")
 

@@ -1,10 +1,11 @@
 import pika
+from os import environ ###
 
 # These module-level variables are initialized whenever a new instance of python interpreter imports the module;
 # In each instance of python interpreter (i.e., a program run), the same module is only imported once (guaranteed by the interpreter).
 
-hostname = "127.0.0.1" # default hostname
-port = 5672 # default port
+hostname = environ.get('rabbit_host') or 'localhost' ###
+port = environ.get('rabbit_port') or 5672 ###
 # connect to the broker and set up a communication channel in the connection
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(
@@ -50,7 +51,6 @@ channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='#')
     # bind the queue to the exchange via the key
     # 'routing_key=#' => any routing_key would be matched
     
-
 """
 This function in this module sets up a connection and a channel to a local AMQP broker,
 and declares a 'topic' exchange to be used by the microservices in the solution.
@@ -65,7 +65,7 @@ def check_setup():
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port, heartbeat=3600, blocked_connection_timeout=3600))
     if channel.is_closed:
         channel = connection.channel()
-        channel.exchange_declare(exchange=exchangename, exchange_type=exchangetype, durable=True)
+        channel.exchange_declare(exchange=exchangename, exchange_type=exchangetype, durable=True) ###
 
 
 def is_connection_open(connection):
