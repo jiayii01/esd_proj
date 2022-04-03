@@ -17,7 +17,7 @@ db = SQLAlchemy(app)
 class Job(db.Model):
     __tablename__ = 'jobs'
 
-    jobID = db.Column(db.Integer, primary_key=True)
+    jobID = db.Column(db.Integer, primary_key=True,autoincrement=True)
     name = db.Column(db.String(64), nullable=False)
     price = db.Column(db.Float(precision=2), nullable=False)
     description = db.Column(db.String(200), nullable=False)
@@ -82,7 +82,7 @@ def find_by_jobID(jobID):
     ), 404
 
 
-@app.route("/jobs/<int:jobID>", methods=['POST'])
+@app.route("/jobs", methods=['POST'])
 def create_job(jobID):
     if (Job.query.filter_by(jobID=jobID).first()):
         return jsonify(
@@ -175,3 +175,11 @@ def update_job(jobID):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5001, debug=True)
+
+
+
+
+
+
+
+
