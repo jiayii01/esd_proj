@@ -20,8 +20,8 @@ class Bidding(db.Model):
 
     biddingID = db.Column(db.Integer, primary_key=True,autoincrement=True)
     # userID = db.Column(db.String(6), nullable=False)
-    freelancerID = db.Column(db.Integer(6))
-    jobID = db.Column(db.Integer(6))
+    freelancerID = db.Column(db.Integer)
+    jobID = db.Column(db.Integer)
     status = db.Column(db.String(10))
     dateTime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     price = db.Column(db.Float(precision=2), nullable=False)
