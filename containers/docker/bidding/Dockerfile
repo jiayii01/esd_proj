@@ -8,3 +8,6 @@ CMD [ "python", "./bidding.py" ]
 
 
 
+# set dbURL=mysql+mysqlconnector://root@localhost:3306/bidding
+
+# docker build -t hullojalapenos/bidding:1.0 ./

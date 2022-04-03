@@ -7,7 +7,7 @@ import json
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/bidding'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
@@ -20,7 +20,7 @@ class Bidding(db.Model):
 
     biddingID = db.Column(db.Integer, primary_key=True,autoincrement=True)
     # userID = db.Column(db.String(6), nullable=False)
-    freelancerID = db.Column(db.String(6))
+    freelancerID = db.Column(db.Integer)
     jobID = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.String(10))
     dateTime = db.Column(db.DateTime, nullable=False, default=datetime.now)
@@ -124,9 +124,9 @@ def find_by_jobID(jobID):
             "message": "Bids for job ID not found."
         }
     ), 404
-response = 'yes'
+
 #adding bids
-@app.route("/bidding/add/<int:jobID>/<string:freelancerID>", methods=['POST'])
+@app.route("/bidding/add/<int:jobID>/<int:freelancerID>", methods=['POST'])
 def create_bids(jobID,freelancerID):
     data = request.get_json()
     bid = Bidding(**data)
@@ -255,3 +255,9 @@ def get_freelancer(jobID):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5002, debug=True)
+
+
+
+
+
+

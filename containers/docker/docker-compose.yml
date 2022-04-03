@@ -5,16 +5,16 @@ services:
   #################################
   # Bidding: The Bidding microservice
   #################################
-  # bidding:
-  #   image: jiayii01/bidding:1.0
-  #   restart: always
-  #   environment:
-  #     dbURL: mysql+mysqlconnector://root:root@localhost:3306/bidding
+  bidding:
+    image: hullojalapenos/bidding:1.0
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://root:root@localhost:3306/bidding
   #################################
   # Job: The Jobs microservice
   #################################
-  jobs:
-    image: jiayii01/jobs:1.0
+  job:
+    image: hullojalapenos/job:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/jobs
@@ -22,7 +22,7 @@ services:
   # calljob: The test_invoke_http.py program
   #################################
   calljob:
-    image: jiayii01/calljob:1.0
+    image: hullojalapenos/calljob:1.0
     restart: always
     environment:
       jobURL: http://jobs:5001/jobs
