@@ -12,20 +12,24 @@ services:
     image: hullojalapenos/bidding:1.0
     restart: always
     environment:
-      dbURL: mysql+mysqlconnector://root:root@localhost:3306/bidding
+      dbURL: mysql+mysqlconnector://is213@localhost:3306/bidding
       PYTHONUNBUFFERED: 1
+    ports:
+      - "5002:5002"
   #################################
   # Freelancer: The Freelancer microservice
   #################################
   freelancer:
     build:
-      context: freelancer/
+      context: freelancers/
       dockerfile: Dockerfile
-    image: hullojalapenos/freelancer:1.0
+    image: hullojalapenos/freelancers:1.0
     restart: always
     environment:
-      dbURL: mysql+mysqlconnector://root:root@localhost:3306/freelancer
+      dbURL: mysql+mysqlconnector://is213@localhost:3306/freelancer
       PYTHONUNBUFFERED: 1
+    ports:
+      - "5004:5004"
   #################################
   # Job: The Jobs microservice
   #################################
@@ -38,6 +42,8 @@ services:
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/jobs
       PYTHONUNBUFFERED: 1
+    ports:
+      - "5001:5001"
   # #################################
   # # Notification: The Notification microservice
   # #################################
@@ -49,6 +55,8 @@ services:
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/notification
+    ports:
+      - "5003:5003"
   # #################################
   # # accept_freelancer: The accept freelancer complex microservice
   # #################################
@@ -58,8 +66,17 @@ services:
         dockerfile: Dockerfile
     image: jiayii01/accept_freelancer:1.0
     restart: always
+    depends_on:
+      - jobs
+      - bidding
+      - notification
+      
     environment:
-        dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/accept_freelancer
+        jobs_URL: http://jobs:5001/jobs
+        bidding_URL: http://bidding:5001/bidding
+        notification_URL: http://notification:5001/notification
+    ports:
+    - "5100:5100"
 
 
 
