@@ -6,42 +6,60 @@ services:
   # Bidding: The Bidding microservice
   #################################
   bidding:
+    build:
+      context: bidding/
+      dockerfile: Dockerfile
     image: hullojalapenos/bidding:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://root:root@localhost:3306/bidding
+      PYTHONUNBUFFERED: 1
+  #################################
+  # Freelancer: The Freelancer microservice
+  #################################
+  freelancer:
+    build:
+      context: freelancer/
+      dockerfile: Dockerfile
+    image: hullojalapenos/freelancer:1.0
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://root:root@localhost:3306/freelancer
+      PYTHONUNBUFFERED: 1
   #################################
   # Job: The Jobs microservice
   #################################
-  job:
+  jobs:
+    build:
+        context: jobs/
+        dockerfile: Dockerfile
     image: hullojalapenos/job:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/jobs
-  #################################
-  # calljob: The test_invoke_http.py program
-  #################################
-  calljob:
-    image: hullojalapenos/calljob:1.0
-    restart: always
-    environment:
-      jobURL: http://jobs:5001/jobs
+      PYTHONUNBUFFERED: 1
   # #################################
   # # Notification: The Notification microservice
   # #################################
-  # notification:
-  #   image: jiayii01/notification:1.0
-  #   restart: always
-  #   environment:
-  #     dbURL: mysql+mysqlconnector://root:root@host.docker.internal:3306/notification
+  notification:
+    build:
+        context: notification/
+        dockerfile: Dockerfile
+    image: jiayii01/notification:1.0
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/notification
   # #################################
   # # accept_freelancer: The accept freelancer complex microservice
   # #################################
-  # accept_freelancer:
-  #   image: jiayii01/accept_freelancer:1.0
-  #   restart: always
-  #   environment:
-  #       dbURL: mysql+mysqlconnector://root:root@host.docker.internal:3306/accept_freelancer
+  accept_freelancer:
+    build:
+        context: accept_freelancer/
+        dockerfile: Dockerfile
+    image: jiayii01/accept_freelancer:1.0
+    restart: always
+    environment:
+        dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/accept_freelancer
 
 
 
