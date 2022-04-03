@@ -23,7 +23,7 @@ services:
     build:
       context: bidding/
       dockerfile: Dockerfile
-    image: jiayii01/bidding:1.0
+    image: xiaoxiao2000/bidding:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/bidding
@@ -37,13 +37,47 @@ services:
     build:
       context: freelancers/
       dockerfile: Dockerfile
-    image: hullojalapenos/freelancers:1.0
+    image: xiaoxiao2000/freelancers:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/freelancers
       PYTHONUNBUFFERED: 1
     ports:
       - "5004:5004"
+
+ #################################################
+  # Activity Log: The Activity Log microservice
+  #################################################
+  activity_log:
+    build:
+      context: ./
+      dockerfile: activity_log.Dockerfile
+    image: xiaoxiao2000/activity_log:esd
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+
+  ###################################
+  # Error: The Error microservice
+  ###################################
+  error:
+    build:
+      context: ./
+      dockerfile: error.Dockerfile
+    image: xiaoxiao2000/error:esd
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+
+
   #################################
   # Job: The Jobs microservice
   #################################
@@ -51,7 +85,7 @@ services:
     build:
         context: jobs/
         dockerfile: Dockerfile
-    image: hullojalapenos/job:1.0
+    image: xiaoxiao2000/job:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/jobs
@@ -65,7 +99,7 @@ services:
     build:
         context: notification/
         dockerfile: Dockerfile
-    image: hullojalapenos/notification:1.0
+    image: xiaoxiao2000/notification:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/notification
@@ -79,12 +113,12 @@ services:
     build:
         context: accept_freelancer/
         dockerfile: Dockerfile
-    image: hullojalapenos/accept_freelancer:1.0
+    image: xiaoxiao2000/accept_freelancer:1.0
     restart: always
     depends_on:
+      - rabbitmq
       - jobs
       - bidding
-      - rabbitmq
       - notification
       
     environment:
@@ -96,6 +130,4 @@ services:
         PYTHONUNBUFFERED: 1
     ports:
     - "5100:5100"
-
-
 
