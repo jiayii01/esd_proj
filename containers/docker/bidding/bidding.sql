@@ -34,9 +34,9 @@ DROP TABLE IF EXISTS `bidding`;
 CREATE TABLE IF NOT EXISTS `bidding` (
   `biddingID` int(6) NOT NULL AUTO_INCREMENT,
   `userID` char(6) NOT NULL,
-  `freelancerID` char(6)  NOT NULL,
+  `freelancerID` int(6)  NOT NULL,
   `jobID` int(6) NOT NULL,
-`status` varchar(10) NOT NULL DEFAULT 'NEW',
+  `status` varchar(10) NOT NULL DEFAULT 'NEW',
   `dateTime` DATE NOT NULL,
   `price` float(4,2) NOT NULL DEFAULT 0,
   
@@ -48,9 +48,9 @@ CREATE TABLE IF NOT EXISTS `bidding` (
 --
 
 INSERT INTO `bidding` (`biddingID`, `userID`, `freelancerID`, `jobID`, `status`, `dateTime`, `price` ) VALUES
-(245624, 'browniem', 'F2',2,'New','2022-03-19 19:38:11','25.00'),
-(245625, 'curryi', 'F1',1,'New','2022-03-18 0:14:55','12.00'),
-(245630, 'fishba', 'F1',8,'New','2022-03-18 0:14:55','20.00');
+(245624, 'browniem',1000,2,'New','2022-03-19 19:38:11','25.00'),
+(245625, 'curryi', 1001,1,'New','2022-03-18 0:14:55','12.00'),
+(245630, 'fishba', 1000,8,'New','2022-03-18 0:14:55','20.00');
 
 ;
 

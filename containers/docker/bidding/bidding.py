@@ -4,8 +4,8 @@ from datetime import datetime
 from os import environ
 from flask_cors import CORS
 import json
-
-
+# for windows people
+# set dbURL=mysql+mysqlconnector://root@localhost:3306/bidding
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -20,8 +20,8 @@ class Bidding(db.Model):
 
     biddingID = db.Column(db.Integer, primary_key=True,autoincrement=True)
     # userID = db.Column(db.String(6), nullable=False)
-    freelancerID = db.Column(db.Integer)
-    jobID = db.Column(db.Integer, primary_key=True)
+    freelancerID = db.Column(db.Integer(6))
+    jobID = db.Column(db.Integer(6))
     status = db.Column(db.String(10))
     dateTime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     price = db.Column(db.Float(precision=2), nullable=False)

@@ -5,6 +5,8 @@ from os import environ
 import requests
 # from flask_cors import CORS
 
+
+# set dbURL=mysql+mysqlconnector://root@localhost:3306/freelancers
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -20,7 +22,7 @@ class Freelancer(db.Model):
     name = db.Column(db.String(64), nullable=False)
     phone = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, freelancerID, name, phone):
+    def __init__(self, name, phone):
         # self.freelancerID = freelancerID
         self.name = name
         self.phone = phone
@@ -82,7 +84,7 @@ def create_freelancer():
             {
               "code": 500,
               "data": {
-                  "freelancerID": freelancer.freelancerID
+                  "freelancerID": freelancer
               },
               "message": "An error occurred creating the freelancer."
             }
