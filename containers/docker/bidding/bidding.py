@@ -106,7 +106,6 @@ def find_by_biddingID(biddingID):
         }
     ), 404
 
-
 #get bids by job ID
 @app.route("/bidding/jobID/<int:jobID>", methods=['GET'])
 def find_by_jobID(jobID):
@@ -129,6 +128,8 @@ def find_by_jobID(jobID):
 @app.route("/bidding/add/<int:jobID>/<int:freelancerID>", methods=['POST'])
 def create_bids(jobID,freelancerID):
     data = request.get_json()
+    data["jobID"] = jobID
+    data["freelancerID"] = freelancerID
     bid = Bidding(**data)
     check_bid_exist = Bidding.query.filter_by(jobID=jobID).filter_by(freelancerID=freelancerID).first()
     print(check_bid_exist)

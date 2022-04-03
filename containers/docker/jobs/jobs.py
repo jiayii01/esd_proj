@@ -83,7 +83,7 @@ def find_by_jobID(jobID):
 
 
 # post job
-@app.route("/job", methods=['POST'])
+@app.route("/jobs", methods=['POST'])
 def create_job():
     # removed code 400
     data = request.get_json()

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>DeliveRiders - Accept Freelancer</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+    <script src='https://cdn.jsdelivr.net/npm/vue@3.0.2/dist/vue.global.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="#!">DeliveRiders</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <!-- navbar -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Post a Job</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="postjob.html">Post a Job</a></li>
+                            <li><a class="dropdown-item" href="accept.html">Posted Jobs</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Bid for a Job</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="bidjob.html">Bid for a Job</a></li>
+                            <li><a class="dropdown-item" href="bidded.html">Bidded Jobs</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <!-- login -->
+                    <a href="login.html" class="btn btn-outline-dark">Login</a>
+                </form>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Header-->
+    <header class="bg-image py-3" style="background-image: url(img/accept.png);">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Check on freelancers who applied to your job </h1>
+                <p class="lead fw-normal text-white-80 mb-0">Accept one of the recomended delivery freelancers for your posted jobs</p>
+            </div>
+        </div>
+    </header>
+
+        <!-- Section-->
+        <div id="app" class="container">
+        <section>
+          <div class="container px-4 px-lg-5 mt-5">
+          <h3>Freelancers who applied</h3>
+          <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center p-3">
+              <div v-for="freelancer in allFreelancers" class="col mb-5">
+                  <div class="card h-100">
+                      <!-- Job details-->
+                      <div class="card-body p-4">
+                          <div class="text-center">
+                              <!-- Job name-->
+                              <h5 class="fw-bolder">{{freelancer.name}}</h5>
+                              <!-- Job reviews-->
+                              <div class="d-flex justify-content-center small text-warning mb-2">
+                              </div>
+                              <!-- Job price-->
+                              <p><b class="text-secondary">Price:</b> S${{freelancer.price}}</p>
+                              <p><b class="text-secondary">Status:</b> <span>{{freelancer.phone}}</span></p>
+                          </div>
+                      </div>
+                      <!-- Job actions-->
+                      <div class="card-footer bg-transparent">
+                          <div class="text-center">
+                              <a class="btn btn-outline-success mt-auto" href="#">View Freelancers</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          </div>
+        </section>
+      </div>
+        <script>
+        const jobIDChosen = parseInt(window.location.search.split("=")[1]);
+        const getAllBids = `http://127.0.0.1:5002/bidding/jobID/${jobIDChosen}`;
+        const getAllFreelancers = `http://127.0.0.1:5004/freelancers`
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: "There is a problem retrieving freelancer data, please try again later.",
+                    allBids: [],
+                    allFreelancers: []
+                };
+            },
+            methods: {
+              getAllBids () {
+                    // on Vue instance created, load the job list
+                const response =
+                  fetch(getAllBids ,{
+                    method: "GET",
+                    mode: 'cors'
+                  })
+                      .then(response => response.json())
+                      .then(data => {
+                          if (data.code === 404) {
+                              // no jobs in db
+                              this.message = "No freelancers applied yet";
+                          } else {
+                              this.getFreelancers(data.bids)
+                          }
+                      })
+                      .catch(error => {
+                          console.log(this.message + error);
+                      });
+                },
+                getFreelancers(bidsSent){
+                  let FIDArr = []
+                  let freelancerArr = []
+                  for(bid of bidsSent){
+                    FIDArr.push(bid.freelancerID)
+                  }
+                  // console.log(FIDArr)
+                  for(indvFID of FIDArr){
+                    const response =
+                    fetch(getAllFreelancers+`/${indvFID}`,{
+                      method: "GET",
+                      mode: 'cors'
+                    })
+                      .then(response => response.json())
+                      .then(data => {
+                          data = data.data
+                          if (data.code === 404) {
+                              // no jobs in db
+                              this.message = "No freelancers applied yet";
+                          } else {
+                              freelancerArr.push(data)
+                          }
+                        })
+                        .catch(error => {
+                            console.log(this.message + error);
+                        });
+                  }
+                }
+            },
+            created () {
+                // on Vue instance created, load the book list
+                this.getAllBids();
+            }
+        });
+        const vm = app.mount('#app');
+    </script>
+
+    <!-- Footer-->
+    <footer class="py-5 bg-image" style="background-image: url(img/accept.png)">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+</body>
+</html>
