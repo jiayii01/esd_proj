@@ -5,54 +5,52 @@ import os
 from setuptools import Require
 from twilio.rest import Client
 from invokesNotification import MyRequestClass
-from dotenv import load_dotenv, find_dotenv
 from datetime import datetime
 import json
-import amqp_setup
 
 app = Flask(__name__)
 CORS(app)
 
 
-number =  "+6597277518"
+number =  "+6597277518"  #change this if you want the message to send to your phone
 
 # Custom HTTP Class
 my_request_client = MyRequestClass()
 
-
+@app.route("/notification/<int:jobID>", methods=['GET'])
 def successful_notification(jobID):
     #os.getenv()
-    client = Client("AC075d686f2b7e890f6f730a89037f731b", "b7c4fb4d1389aa98ce6006bcda44bcaa",
+    #freelancer side
+    print("here")
+    client = Client("AC075d686f2b7e890f6f730a89037f731b", "34425b525b0645840de26a1753cbdf30",
                 http_client=my_request_client)
 
     message = client.messages \
     .create(
         to=number,
-        body="Congrats! You have been selected for job " + jobID+", please login to check your job details.",
+        body="Congrats! You have been selected for job " + str(jobID)+", please login to check your job details.",
         from_="+12347203241"
     )
 
     msg = "Accept job published to RabbitMQ Exchange."
 
-    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="Activity_Log", 
-    body=msg)
     print(message)
     print("\nAccept job published to RabbitMQ Exchange.\n")
 
-def jobConfirmation_notification(jobID):
 
-    #os.getenv()
-    client = Client("AC075d686f2b7e890f6f730a89037f731b", "b7c4fb4d1389aa98ce6006bcda44bcaa",
-                http_client=my_request_client)
+    #job poster side
 
-    message = client.messages \
+    message2 = client.messages \
     .create(
         to=number,
-        body="Congrats! Your job " + jobID+", role has been filled. Please login to view the freelancer details",
+        body="Congrats! Your job " + str(jobID)+", role has been filled. Please login to view the freelancer details",
         from_="+12347203241"
     )
 
+    return "success"
 
+
+@app.route("/broadcast_notification/<int:jobID>", methods=['GET'])
 def broadcast_notification(jobID):
     #os.getenv()
     client = Client("AC075d686f2b7e890f6f730a89037f731b", "b7c4fb4d1389aa98ce6006bcda44bcaa",
@@ -65,4 +63,5 @@ def broadcast_notification(jobID):
         from_="+12347203241"
     )
 
-successful_notification("123")
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5003, debug=True)

@@ -1,7 +1,21 @@
 version: "3.8"
 
-services:
+volumes:
+  rabbitmq_data: 
 
+services:
+  ####################################
+  # RabbitMQ: The messaging broker   
+  ####################################
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: esd-rabbit
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes: 
+      - rabbitmq_data:/var/lib/rabbitmq
   #################################
   # Bidding: The Bidding microservice
   #################################
@@ -9,10 +23,10 @@ services:
     build:
       context: bidding/
       dockerfile: Dockerfile
-    image: hullojalapenos/bidding:1.0
+    image: jiayii01/bidding:1.0
     restart: always
     environment:
-      dbURL: mysql+mysqlconnector://is213@localhost:3306/bidding
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/bidding
       PYTHONUNBUFFERED: 1
     ports:
       - "5002:5002"
@@ -23,10 +37,10 @@ services:
     build:
       context: freelancers/
       dockerfile: Dockerfile
-    image: hullojalapenos/freelancers:1.0
+    image: jiayii01/freelancers:1.0
     restart: always
     environment:
-      dbURL: mysql+mysqlconnector://is213@localhost:3306/freelancer
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/freelancers
       PYTHONUNBUFFERED: 1
     ports:
       - "5004:5004"
@@ -37,7 +51,7 @@ services:
     build:
         context: jobs/
         dockerfile: Dockerfile
-    image: hullojalapenos/job:1.0
+    image: jiayii01/job:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/jobs
@@ -55,6 +69,7 @@ services:
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/notification
+      PYTHONUNBUFFERED: 1
     ports:
       - "5003:5003"
   # #################################
@@ -69,12 +84,16 @@ services:
     depends_on:
       - jobs
       - bidding
+      - rabbitmq
       - notification
       
     environment:
+        rabbit_host: rabbitmq
+        rabbit_port: 5672
         jobs_URL: http://jobs:5001/jobs
-        bidding_URL: http://bidding:5001/bidding
-        notification_URL: http://notification:5001/notification
+        bidding_URL: http://bidding:5002/bidding
+        notification_URL: http://notification:5003/notification
+        PYTHONUNBUFFERED: 1
     ports:
     - "5100:5100"
 
