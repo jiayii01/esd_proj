@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from os import environ
@@ -43,7 +43,7 @@ class Job(db.Model):
         self.distance = distance
 
     def json(self):
-        return {"jobID": self.jobID, "name": self.name, "price": self.price, "description": self.description, "status": self.status, "deliveryDate": self.deliveryDate, "pickUpLocation": self.pickUpLocation, "destination": self.destination, "freelancerID": self.freelancerID, "distance": self.distance}
+        return {"jobID": self.jobID, "name": self.name, "price": self.price, "deadline":self.deadline, "description": self.description, "status": self.status, "deliveryDate": self.deliveryDate, "pickUpLocation": self.pickUpLocation, "destination": self.destination, "freelancerID": self.freelancerID, "distance": self.distance}
 
 @app.route("/jobs")
 def get_all():
@@ -82,21 +82,13 @@ def find_by_jobID(jobID):
     ), 404
 
 
-@app.route("/jobs", methods=['POST'])
-def create_job(jobID):
-    if (Job.query.filter_by(jobID=jobID).first()):
-        return jsonify(
-            {
-              "code": 400,
-              "data": {
-                  "jobID": jobID
-              },
-              "message": "Job already exists."
-            }
-        ), 400
-
+# post job
+@app.route("/job", methods=['POST'])
+def create_job():
+    # removed code 400
     data = request.get_json()
-    
+    print(data)
+
     url = "https://maps.googleapis.com/maps/api/directions/json?origin="+data["pickUpLocation"][:6]+",Singapore&destination="+data["destination"][:6]+",Singapore&key=AIzaSyCR5bhybFFnGTii7iY70BOShkkKnYTHj2E"
     payload={}
     headers = {}
@@ -106,8 +98,12 @@ def create_job(jobID):
         data["distance"] = "unavailable"
     else:
         data["distance"] = finaloutput["routes"][0]["legs"][0]["distance"]["text"]
-        data["status"] = "NEW"
-    job = Job(jobID, **data)
+    
+    data["status"] = "NEW"
+    # let freelancerID be 0 first
+    data['freelancerID'] = 0
+    # removed jobID
+    job = Job(**data)
 
     try:
         db.session.add(job)
@@ -115,11 +111,11 @@ def create_job(jobID):
     except:
         return jsonify(
             {
-              "code": 500,
-              "data": {
-                  "jobID": jobID
-              },
-              "message": "An error occurred creating the job."
+                "code": 500,
+                "data": {
+                    "jobID": job.jobID
+                },
+                "message": "An error occurred creating the job."
             }
         ), 500
 
@@ -172,14 +168,19 @@ def update_job(jobID):
         }
     ), 404
 
+# rendering templates
+@app.route("/joblist")
+def joblist():
+    return render_template("bidjob.html")
+
+@app.route("/postjob")
+def postjob():
+    return render_template("postjob.html")
+
+@app.route("/success/<int:jobID>")
+def success(jobID):
+    return render_template("success.html", jobID=jobID)
+# end
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5001, debug=True)
-
-
-
-
-
-
-
-

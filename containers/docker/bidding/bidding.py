@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from os import environ
@@ -252,6 +252,15 @@ def get_freelancer(jobID):
         ), 404
             
         
+# rendering templates
+@app.route("/joblist")
+def joblist():
+    return render_template("bidjob.html")
+
+@app.route("/jobdetails/<int:jobID>")
+def jobdetails(jobID):
+    return render_template("jobdetails.html", jobID=jobID)
+# end
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5002, debug=True)
