@@ -17,7 +17,7 @@ db = SQLAlchemy(app)
 class Job(db.Model):
     __tablename__ = 'jobs'
 
-    jobID = db.Column(db.Integer(6), primary_key=True,autoincrement=True)
+    jobID = db.Column(db.Integer, primary_key=True,autoincrement=True)
     name = db.Column(db.String(64), nullable=False)
     price = db.Column(db.Float(precision=2), nullable=False)
     description = db.Column(db.String(200), nullable=False)
@@ -26,7 +26,7 @@ class Job(db.Model):
     deadline = db.Column(db.Date, nullable=False)
     pickUpLocation = db.Column(db.String(1024), nullable=False)
     destination = db.Column(db.String(1024), nullable=False)
-    freelancerID = db.Column(db.Integer(6))
+    freelancerID = db.Column(db.Integer)
     distance = db.Column(db.String(11), nullable=False)
 
     def __init__(self, name, price, description, status, deliveryDate, deadline, pickUpLocation, destination, freelancerID, distance):
