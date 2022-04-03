@@ -5,35 +5,43 @@ services:
   #################################
   # Bidding: The Bidding microservice
   #################################
-  bidding:
-    image: jiayii01/bidding:1.0
+  # bidding:
+  #   image: jiayii01/bidding:1.0
+  #   restart: always
+  #   environment:
+  #     dbURL: mysql+mysqlconnector://root:root@localhost:3306/bidding
+  #################################
+  # Job: The Jobs microservice
+  #################################
+  jobs:
+    image: jiayii01/jobs:1.0
     restart: always
     environment:
-      dbURL: mysql+mysqlconnector://root:root@localhost:3306/bidding
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/jobs
   #################################
-  # Job: The Job microservice
+  # calljob: The test_invoke_http.py program
   #################################
-  job:
-    image: jiayii01/job:1.0
+  calljob:
+    image: jiayii01/calljob:1.0
     restart: always
     environment:
-      dbURL: mysql+mysqlconnector://root:root@localhost:3306/jobs
-  #################################
-  # notification: The notification microservice
-  #################################
+      jobURL: http://jobs:5001/jobs
+  # #################################
+  # # Notification: The Notification microservice
+  # #################################
   # notification:
-  #   image: hullojalapenos/notification:1.0
+  #   image: jiayii01/notification:1.0
   #   restart: always
   #   environment:
-  #     dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/notification
-  #################################
-  # accept_freelancer: The accept freelancer complex microservice
-  #################################
+  #     dbURL: mysql+mysqlconnector://root:root@host.docker.internal:3306/notification
+  # #################################
+  # # accept_freelancer: The accept freelancer complex microservice
+  # #################################
   # accept_freelancer:
-  #   image: hullojalapenos/accept_freelancer:1.0
+  #   image: jiayii01/accept_freelancer:1.0
   #   restart: always
   #   environment:
-  #       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/accept_freelancer
+  #       dbURL: mysql+mysqlconnector://root:root@host.docker.internal:3306/accept_freelancer
 
 
 

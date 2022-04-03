@@ -16,9 +16,9 @@ job_details = {
     "deadline": "2022-04-13",
     "deliveryDate": "2022-04-15",
     "description": "Please deliver these cakes!",
-    "destination": "765621 Marina Bay Sands 4",
+    "destination": "680631 Marina Bay Sands 4",
     "name": "Cake Delivery",
-    "pickUpLocation": "512456 Ubi Street 12 Blk 456 #11-28",
+    "pickUpLocation": "510123 Ubi Street 12 Blk 456 #11-28",
     "price": 21.0,
     "status": "NEW",
     "freelancerID": None
