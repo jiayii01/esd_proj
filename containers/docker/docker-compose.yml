@@ -37,7 +37,7 @@ services:
     build:
       context: freelancers/
       dockerfile: Dockerfile
-    image: jiayii01/freelancers:1.0
+    image: hullojalapenos/freelancers:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/freelancers
@@ -51,7 +51,7 @@ services:
     build:
         context: jobs/
         dockerfile: Dockerfile
-    image: jiayii01/job:1.0
+    image: hullojalapenos/job:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/jobs
@@ -65,7 +65,7 @@ services:
     build:
         context: notification/
         dockerfile: Dockerfile
-    image: jiayii01/notification:1.0
+    image: hullojalapenos/notification:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/notification
@@ -79,7 +79,7 @@ services:
     build:
         context: accept_freelancer/
         dockerfile: Dockerfile
-    image: jiayii01/accept_freelancer:1.0
+    image: hullojalapenos/accept_freelancer:1.0
     restart: always
     depends_on:
       - jobs

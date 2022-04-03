@@ -128,8 +128,13 @@ def find_by_jobID(jobID):
 @app.route("/bidding/add/<int:jobID>/<int:freelancerID>", methods=['POST'])
 def create_bids(jobID,freelancerID):
     data = request.get_json()
+<<<<<<< Updated upstream
     data["jobID"] = jobID
     data["freelancerID"] = freelancerID
+=======
+    data['jobID'] = jobID
+    data['freelancerID'] = freelancerID
+>>>>>>> Stashed changes
     bid = Bidding(**data)
     check_bid_exist = Bidding.query.filter_by(jobID=jobID).filter_by(freelancerID=freelancerID).first()
     print(check_bid_exist)
@@ -253,15 +258,15 @@ def get_freelancer(jobID):
         ), 404
             
         
-# rendering templates
-@app.route("/joblist")
-def joblist():
-    return render_template("bidjob.html")
+# # rendering templates
+# @app.route("/joblist")
+# def joblist():
+#     return render_template("bidjob.html")
 
-@app.route("/jobdetails/<int:jobID>")
-def jobdetails(jobID):
-    return render_template("jobdetails.html", jobID=jobID)
-# end
+# @app.route("/jobdetails/<int:jobID>")
+# def jobdetails(jobID):
+#     return render_template("jobdetails.html", jobID=jobID)
+# # end
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5002, debug=True)

@@ -3,16 +3,16 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from os import environ
 import requests
-# from flask_cors import CORS
+from flask_cors import CORS
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/jobs'
+# set dbURL=mysql+mysqlconnector://root@localhost:3306/jobs
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-# CORS(app)
+CORS(app)
 
 class Job(db.Model):
     __tablename__ = 'jobs'
@@ -43,7 +43,12 @@ class Job(db.Model):
         self.distance = distance
 
     def json(self):
-        return {"jobID": self.jobID, "name": self.name, "price": self.price, "deadline":self.deadline, "description": self.description, "status": self.status, "deliveryDate": self.deliveryDate, "pickUpLocation": self.pickUpLocation, "destination": self.destination, "freelancerID": self.freelancerID, "distance": self.distance}
+        return {"jobID": self.jobID,
+         "name": self.name, 
+         "price": self.price,
+          "deadline":self.deadline, 
+          "description": self.description, 
+          "status": self.status, "deliveryDate": self.deliveryDate, "pickUpLocation": self.pickUpLocation, "destination": self.destination, "freelancerID": self.freelancerID, "distance": self.distance}
 
 @app.route("/jobs")
 def get_all():
@@ -87,7 +92,7 @@ def find_by_jobID(jobID):
 def create_job():
     # removed code 400
     data = request.get_json()
-    print(data)
+    
 
     url = "https://maps.googleapis.com/maps/api/directions/json?origin="+data["pickUpLocation"][:6]+",Singapore&destination="+data["destination"][:6]+",Singapore&key=AIzaSyCR5bhybFFnGTii7iY70BOShkkKnYTHj2E"
     payload={}
@@ -103,8 +108,9 @@ def create_job():
     # let freelancerID be 0 first
     data['freelancerID'] = 0
     # removed jobID
+    print(data)
     job = Job(**data)
-
+    
     try:
         db.session.add(job)
         db.session.commit()
@@ -169,17 +175,17 @@ def update_job(jobID):
     ), 404
 
 # rendering templates
-@app.route("/joblist")
-def joblist():
-    return render_template("bidjob.html")
+# @app.route("/joblist")
+# def joblist():
+#     return render_template("bidjob.html")
 
-@app.route("/postjob")
-def postjob():
-    return render_template("postjob.html")
+# @app.route("/postjob")
+# def postjob():
+#     return render_template("postjob.html")
 
-@app.route("/success/<int:jobID>")
-def success(jobID):
-    return render_template("success.html", jobID=jobID)
+# @app.route("/success/<int:jobID>")
+# def success(jobID):
+#     return render_template("success.html", jobID=jobID)
 # end
 
 if __name__ == '__main__':
