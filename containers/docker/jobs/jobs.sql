@@ -50,11 +50,13 @@ CREATE TABLE IF NOT EXISTS `jobs` (
 -- Dumping data for table `jobs`
 --
 INSERT INTO `jobs` (`jobID`, `name`, `price`, `description`, `status`,`deliveryDate`, `deadline`, `pickUpLocation`,`destination`,`freelancerID`,`distance`) VALUES
-(1, 'Baked Goods Delivery', '12.00', 'I need you to deliver 2 orders of cupcakes to the destination.', 'NEW', '2022-04-18', '2022-04-01', '520123 Simei Street 1 Blk 123 #02-07','510123 Pasir Ris Street 7 Blk 321 #07-02',0,'4.6 km');
+(30001, 'Baked Goods Delivery', '12.00', 'I need you to deliver 2 orders of cupcakes to the destination.', 'NEW', '2022-04-18', '2022-04-01', '520123 Simei Street 1 Blk 123 #02-07','510123 Pasir Ris Street 7 Blk 321 #07-02',0,'4.6 km');
 
 INSERT INTO `jobs` (`jobID`, `name`, `price`, `description`, `status`,`deliveryDate`, `deadline`,`pickUpLocation`, `destination`, `freelancerID`,`distance`) VALUES
-(2, 'Brownies Delivery', '25.00', 'I need you to delivery 1 box of lemon pie to the destination, thanks!', 'NEW', '2022-04-19', '2022-04-01','520345 Bedok Street 2 Blk 345 #04-08', '600134 Jurong Street 10 Blk 134 #11-32', NULL,'30.6 km');
+(30002, 'Brownies Delivery', '25.00', 'I need you to delivery 1 box of lemon pie to the destination, thanks!', 'NEW', '2022-04-19', '2022-04-01','520345 Bedok Street 2 Blk 345 #04-08', '600134 Jurong Street 10 Blk 134 #11-32', 0,'30.6 km');
 
+INSERT INTO `jobs` (`jobID`, `name`, `price`, `description`, `status`,`deliveryDate`, `deadline`,`pickUpLocation`, `destination`, `freelancerID`,`distance`) VALUES
+(30003, 'Ice Cream Delivery', '25.00', 'I need you to delivery 1 box of ice cream to the destination, thanks!', 'NEW', '2022-04-19', '2022-04-01','680631 Choa Chu Kang North 6 #09-225', '178901 70 Stamford Road #01-22 Li Ka Shing Library', 0,'30.6 km');
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -50,7 +50,7 @@ services:
   #################################################
   activity_log:
     build:
-      context: ./
+      context: accept_freelancer/
       dockerfile: activity_log.Dockerfile
     image: xiaoxiao2000/activity_log:esd
     restart: always
@@ -66,7 +66,7 @@ services:
   ###################################
   error:
     build:
-      context: ./
+      context: accept_freelancer/
       dockerfile: error.Dockerfile
     image: xiaoxiao2000/error:esd
     restart: always
