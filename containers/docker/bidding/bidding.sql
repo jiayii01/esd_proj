@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `bidding` (
   `freelancerID` int(6)  NOT NULL,
   `jobID` int(6) NOT NULL,
   `status` varchar(10) NOT NULL DEFAULT 'NEW',
-  `dateTime` DATETIME NOT NULL,
+  `dateTime` DATE NOT NULL,
   `price` float(4,2) NOT NULL DEFAULT 0,
   
   PRIMARY KEY (`biddingID`)
