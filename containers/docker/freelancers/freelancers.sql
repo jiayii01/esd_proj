@@ -42,10 +42,16 @@ CREATE TABLE IF NOT EXISTS `freelancers` (
 -- Dumping data for table `freelancers`
 --
 INSERT INTO `freelancers` (`freelancerID`, `name`, `phone`) VALUES
-(1000, 'Bob Toh', '98765432');
+(20000, 'Bob Toh', '98765432');
 
 INSERT INTO `freelancers` (`freelancerID`, `name`, `phone`) VALUES
-(1001, 'Sarah Tan', '84652345');
+(20001, 'Sarah Tan', '84652345');
+
+INSERT INTO `freelancers` (`freelancerID`, `name`, `phone`) VALUES
+(20003, 'Bab Teo', '87341234');
+
+INSERT INTO `freelancers` (`freelancerID`, `name`, `phone`) VALUES
+(20004, 'Lo Siaw Ling', '988731234');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
