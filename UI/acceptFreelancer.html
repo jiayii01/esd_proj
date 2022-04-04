@@ -67,19 +67,20 @@
                       <div class="card-body p-4">
                           <div class="text-center">
                               <!-- Job name-->
-                              <h5 class="fw-bolder">{{freelancer.name}}</h5>
+                              <h5 class="fw-bolder">Freelancer ID: {{freelancer.freelancerID}}</h5>
                               <!-- Job reviews-->
                               <div class="d-flex justify-content-center small text-warning mb-2">
                               </div>
                               <!-- Job price-->
-                              <p><b class="text-secondary">Price:</b> S${{freelancer.price}}</p>
-                              <p><b class="text-secondary">Status:</b> <span>{{freelancer.phone}}</span></p>
+                              <p><b class="text-secondary">Name:</b> {{freelancer.name}}</p>
+                              <p><b class="text-secondary">Phone Number:</b> <span>{{freelancer.phone}}</span></p>
+                              <p><b class="text-secondary">Bid Price:</b> <span> S${{freelancer.bidPrice}}</span></p>
                           </div>
                       </div>
                       <!-- Job actions-->
                       <div class="card-footer bg-transparent">
                           <div class="text-center">
-                              <a class="btn btn-outline-success mt-auto" href="#">View Freelancers</a>
+                              <a @click="acceptFreelancer(freelancer.biddingID)" class="btn btn-outline-success mt-auto" href="#">Accept Freelancer</a>
                           </div>
                       </div>
                   </div>
@@ -124,11 +125,11 @@
                 },
                 getFreelancers(bidsSent){
                   let FIDArr = []
-                  let freelancerArr = []
                   for(bid of bidsSent){
-                    FIDArr.push(bid.freelancerID)
+                    FIDArr.push([bid.freelancerID, bid.price, bid.biddingID])
                   }
-                  for(indvFID of FIDArr){
+                  for(indvF of FIDArr){
+                    indvFID = indvF[0]
                     const response =
                     fetch(getAllFreelancers+`/${indvFID}`,{
                       method: "GET",
@@ -137,23 +138,25 @@
                       .then(response => response.json())
                       .then(data => {
                           data = data.data
+                          console.log(data)
                           if (data.code === 404) {
                               // no jobs in db
                               this.message = "No freelancers applied yet";
                           } else {
-                            // console.log(data)
-                              freelancerArr.push({
-                                freelancerID: data.freelancerID,
-                                name: data.name,
-                                price: data.phone,
-                              })
+                            newData = {
+                              freelancerID: data.freelancerID,
+                              name: data.name,
+                              phone: data.phone,
+                              bidPrice: indvF[1],
+                              biddingID: indvF[2]
+                            }
+                            this.allFreelancers.push(newData)
                           }
                         })
                         .catch(error => {
                             console.log(this.message + error);
                         });
                   }
-                  console.log(freelancerArr)
                 }
             },
             created () {
