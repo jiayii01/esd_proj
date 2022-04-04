@@ -29,7 +29,7 @@
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Post a Job</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="postjob.html">Post a Job</a></li>
-                            <li><a class="dropdown-item" href="accept.html">Posted Jobs</a></li>
+                            <li><a class="dropdown-item" href="viewJobs.html">Posted Jobs</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -107,7 +107,7 @@
             data() {
                 return {
                     message: "There is a problem adding freelancer, please try again later.",
-                    allJobs: [],
+                    allFreelancers: [],
                     name: "",
                     phone: ""
                 };
@@ -126,8 +126,8 @@
                             mode: 'cors',
                             body:JSON.stringify({
                             name: this.name,
-                            phone:this.phone
-                    })
+                            phone: this.phone
+                            })
                         })
                         .then(response => response.json())
                         .then(data => {
