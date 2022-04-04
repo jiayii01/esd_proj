@@ -35,15 +35,12 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Bid for a Job</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/joblist">Bid for a Job</a></li>
+                            <li><a class="dropdown-item" href="addFreelancer.html">Add Freelancer</a></li>
+                            <li><a class="dropdown-item" href="bidjob.html">Bid for a Job</a></li>
                             <li><a class="dropdown-item" href="bidded.html">Bidded Jobs</a></li>
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <!-- login -->
-                    <a href="login.html" class="btn btn-outline-dark">Login</a>
-                </form>
             </div>
         </div>
     </nav>
@@ -122,9 +119,8 @@
         <!-- jQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         
-        
         <script>
-        const create_job = "http://127.0.0.1:5001/jobs";
+        const create_job = "http://localhost:5001/jobs";
         
         const app = Vue.createApp({
             computed: {
@@ -167,7 +163,6 @@
                             deadline:this.deadline,
                             pickUpLocation:this.pickup,
                             destination:this.destination
-   
             
                     })
                         })
@@ -187,8 +182,6 @@
                             }
                             else {
                                 this.message = data.message
-
-                               
 
                                 
                             }
