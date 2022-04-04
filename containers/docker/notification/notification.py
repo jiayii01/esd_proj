@@ -5,7 +5,6 @@ import os
 from setuptools import Require
 from twilio.rest import Client
 from invokesNotification import MyRequestClass
-from datetime import datetime
 import json
 
 app = Flask(__name__)
@@ -22,7 +21,7 @@ def successful_notification(jobID):
     #os.getenv()
     #freelancer side
     print("here")
-    client = Client("AC075d686f2b7e890f6f730a89037f731b", "34425b525b0645840de26a1753cbdf30",
+    client = Client("AC075d686f2b7e890f6f730a89037f731b", "00cb3e1d17529296ec27ee6fcaa4ceab",
                 http_client=my_request_client)
 
     message = client.messages \
