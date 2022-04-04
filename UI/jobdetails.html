@@ -156,7 +156,7 @@
             },
             data() {
                 return {
-                    error: [],
+                    message:"",
                     job:"",
                     freelancerID:"",
                     bids:""
@@ -173,10 +173,11 @@
                                 "Content-type": "application/json"
                             },
                       mode: 'cors',
-                      body: JSON.stringify({ biddingID:245640,
-                                             dateTime:"'2022-03-19 19:38:11'",
-                                             price:this.bids,
-                                             status:"New"}
+                      body: JSON.stringify({
+                                            status:"New",
+                                            dateTime:"'2022-03-19'",
+                                            price:this.bids,
+                                            }
                       
                       )})
                         .then(response => response.json())
@@ -184,10 +185,10 @@
                             console.log(data)
                             if (data.code === 404) {
                                 // no book in db
-                                this.error = data.message;
+                                this.message = data.message;
                             } 
                             else if(data.code == 500){
-                                this.error = data.message;
+                                this.message = data.message;
                             }
                             else {
                                 this.job = data.data

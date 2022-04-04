@@ -26,8 +26,8 @@ class Bidding(db.Model):
     dateTime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     price = db.Column(db.Float(precision=2), nullable=False)
 
-    def __init__(self, biddingID, freelancerID, jobID, status, dateTime, price):
-        self.biddingID= biddingID
+    def __init__(self, freelancerID, jobID, status, dateTime, price):
+        # self.biddingID= biddingID
         # self.userID = userID
         self.freelancerID = freelancerID
         self.jobID = jobID
@@ -128,16 +128,10 @@ def find_by_jobID(jobID):
 @app.route("/bidding/add/<int:jobID>/<int:freelancerID>", methods=['POST'])
 def create_bids(jobID,freelancerID):
     data = request.get_json()
-<<<<<<< Updated upstream
     data["jobID"] = jobID
     data["freelancerID"] = freelancerID
-=======
-    data['jobID'] = jobID
-    data['freelancerID'] = freelancerID
->>>>>>> Stashed changes
-    bid = Bidding(**data)
     check_bid_exist = Bidding.query.filter_by(jobID=jobID).filter_by(freelancerID=freelancerID).first()
-    print(check_bid_exist)
+    bid = Bidding(**data)
     if (check_bid_exist):
         #if bid exists, delete old bid first then add new bid
         db.session.delete(check_bid_exist)
