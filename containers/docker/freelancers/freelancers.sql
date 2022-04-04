@@ -53,6 +53,9 @@ INSERT INTO `freelancers` (`freelancerID`, `name`, `phone`) VALUES
 INSERT INTO `freelancers` (`freelancerID`, `name`, `phone`) VALUES
 (20004, 'Lo Siaw Ling', '988731234');
 
+INSERT INTO `freelancers` (`freelancerID`, `name`, `phone`) VALUES
+(20005, 'Bib Wong', '98761244');
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

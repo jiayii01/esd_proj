@@ -129,6 +129,10 @@
                   }
                   for(indvF of FIDArr){
                     indvFID = indvF[0]
+                    bidPrice = indvF[1]
+                    biddingID = indvF[2]
+                    name = "",
+                    phone = 0
                     const response =
                     fetch(getAllFreelancers+`/${indvFID}`,{
                       method: "GET",
@@ -137,25 +141,29 @@
                       .then(response => response.json())
                       .then(data => {
                           data = data.data
-                          console.log(data)
                           if (data.code === 404) {
                               // no jobs in db
                               this.message = "No freelancers applied yet";
                           } else {
-                            newData = {
-                              freelancerID: data.freelancerID,
-                              name: data.name,
-                              phone: data.phone,
-                              bidPrice: indvF[1],
-                              biddingID: indvF[2]
-                            }
-                            this.allFreelancers.push(newData)
+                            name = data.name
+                            phone = data.phone
                           }
                         })
                         .catch(error => {
                             console.log(this.message + error);
                         });
+                        newData = {
+                          freelancerID: indvFID,
+                          name: name,
+                          phone: bidPrice,
+                          bidPrice: bidPrice,
+                          biddingID: biddingID
+                        }
+                        this.allFreelancers.push(newData)
                   }
+                },
+                acceptFreelancer(bidID){
+                  window.location.href = `acceptedFreelancer.html?bidID=${bidID}`
                 }
             },
             created () {
