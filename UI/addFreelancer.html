@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>DeliveRiders - Post a Job</title>
+        <title>DeliveRiders - Add Freelancer</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -35,15 +35,12 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Bid for a Job</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/joblist">Bid for a Job</a></li>
+                            <li><a class="dropdown-item" href="addFreelancer.html">Add Freelancer</a></li>
+                            <li><a class="dropdown-item" href="bidjob.html">Bid for a Job</a></li>
                             <li><a class="dropdown-item" href="bidded.html">Bidded Jobs</a></li>
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <!-- login -->
-                    <a href="login.html" class="btn btn-outline-dark">Login</a>
-                </form>
             </div>
         </div>
     </nav>
@@ -52,8 +49,8 @@
             <header class="py-2">
                 <div class="container px-4 px-lg-5 my-5">
                     <div class="text-center text-white">
-                        <h1 class="display-4 fw-bolder">Post a Job</h1>
-                        <p class="lead fw-normal text-white-80 mb-0">Start posting jobs</p>
+                        <h1 class="display-4 fw-bolder">Add Freelancer</h1>
+                        <p class="lead fw-normal text-white-80 mb-0">Add a freelancer's name and phone number</p>
                     </div>
                 </div>
             </header>
@@ -64,47 +61,23 @@
                     <div class="col-6 p-3 mx-auto">
                         <div class="card" id="app">
                             <h2 class="card-header">
-                                Enter job details below
+                                Enter freelancer details below
                             </h2>
-                            <!-- Job details-->
+                            <!-- Freelancer details-->
                             <div class="card-body" >
                                 <form class="form-group"> 
-                                    <!-- action: backend url that receives the post request-->
                                     <div class="mb-3">
-                                        <label for="title" class="form-label">Job Title</label>
-                                        <input type="text" v-model="title" class="form-control" id="title" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="jobDescription" class="form-label">Job Description</label>
-                                        <textarea class="form-control" v-model="description" aria-label="Job Description" id="jobDescription" required></textarea>
-                                        <div id="jobDescription" class="form-text">input job description above</div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="delivery" class="form-label">Delivery Date</label>
-                                        <input type="date" class="form-control" v-model="delivery" id="delivery" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="pickup" class="form-label">Pickup Address</label>
-                                        <input type="text" class="form-control" id="pickup" v-model="pickup" required>
-                                        <div id="pickup" v-model="pickup" class="form-text">Enter postal code followed by address</div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="destination" class="form-label">Destination</label>
-                                        <input type="text" class="form-control" id="destination"  v-model="destination" required>
-                                        <div id="destination"  class="form-text">Enter postal code followed by address</div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="deadline" class="form-label">Deadline</label>
-                                        <input type="date" class="form-control" v-model="deadline" id="deadline" required>
+                                        <label for="name" class="form-label">Name</label>
+                                        <input type="text" v-model="name" class="form-control" id="name" required>
                                     </div>
                                     <div class="mb-3 input-group">
-                                        <label for="maxbid">Place bid amount: </label>
+                                        <label for="phone" class="form-label">Phone Number</label>
                                         <div class="col-auto input-group">
-                                            <span class="input-group-text">$</span>
-                                            <input type="text" class="form-control" v-model="maxbid" id="maxbid" required>
+                                            <span class="input-group-text">+65</span>
+                                            <input type="text" class="form-control" id="pickup" v-model="phone" required>
                                         </div>
                                     </div>
-                                    <button @click="postJob" class="btn btn-outline-dark">Post</button>
+                                    <button @click="addFreelancer" class="btn btn-outline-dark">Add Freelancer</button>
                                 </form>
                             </div>
                             <!-- Product actions-->
@@ -122,9 +95,8 @@
         <!-- jQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         
-        
         <script>
-        const create_job = "http://127.0.0.1:5001/jobs";
+        const create_freelancer = "http://127.0.0.1:5004/freelancers";
         
         const app = Vue.createApp({
             computed: {
@@ -134,24 +106,17 @@
             },
             data() {
                 return {
-                    message: "There is a problem retrieving books data, please try again later.",
+                    message: "There is a problem adding freelancer, please try again later.",
                     allJobs: [],
-                    title:"",
-                    maxbid:"",
-                    description:"",
-                    deadline:"",
-                    pickup:"",
-                    destination:"",
-                    message: ""
-
-
+                    name: "",
+                    phone: ""
                 };
             },
             methods:{
-                postJob() {
+                addFreelancer() {
                     // reset data
 
-                    fetch(create_job,
+                    fetch(create_freelancer,
                         {
                             method: "POST",
                             headers: {
@@ -160,15 +125,8 @@
                             },
                             mode: 'cors',
                             body:JSON.stringify({
-                            name: this.title,
-                            price:this.maxbid,
-                            description: this.description,
-                            deliveryDate: this.delivery,
-                            deadline:this.deadline,
-                            pickUpLocation:this.pickup,
-                            destination:this.destination
-   
-            
+                            name: this.name,
+                            phone:this.phone
                     })
                         })
                         .then(response => response.json())
@@ -187,8 +145,6 @@
                             }
                             else {
                                 this.message = data.message
-
-                               
 
                                 
                             }

@@ -19,7 +19,6 @@ class Bidding(db.Model):
     __tablename__ = 'bidding'
 
     biddingID = db.Column(db.Integer, primary_key=True,autoincrement=True)
-    # userID = db.Column(db.String(6), nullable=False)
     freelancerID = db.Column(db.Integer)
     jobID = db.Column(db.Integer)
     status = db.Column(db.String(10))
@@ -28,7 +27,6 @@ class Bidding(db.Model):
 
     def __init__(self, freelancerID, jobID, status, dateTime, price):
         # self.biddingID= biddingID
-        # self.userID = userID
         self.freelancerID = freelancerID
         self.jobID = jobID
         self.status = status
