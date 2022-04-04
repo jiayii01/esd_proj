@@ -67,7 +67,7 @@ def updateJobStatus(jobId,freelancerId):
 
     freelancerAndStatus = {
       "freelancerID": freelancerId,
-      "status": "Filled"
+      "status": "FILLED"
     }
 
     job_result = invoke_http(job_URL+"/"+str(jobId), method='PUT', json=freelancerAndStatus)
