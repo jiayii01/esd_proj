@@ -69,8 +69,6 @@ def find_by_freelancerID(freelancerID):
     ), 404
 
 
-
-
 @app.route("/freelancers", methods=['POST'])
 def create_freelancer():
     data = request.get_json()
