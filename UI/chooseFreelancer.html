@@ -92,6 +92,7 @@
         const jobIDChosen = parseInt(window.location.search.split("=")[1]);
         const getAllBids = `http://127.0.0.1:5002/bidding/jobID/${jobIDChosen}`;
         const getAllFreelancers = `http://127.0.0.1:5004/freelancers`
+        const acceptFreelancer = "http://127.0.0.1:5100/accept_freelancer" 
 
         const app = Vue.createApp({
             data() {
@@ -163,7 +164,42 @@
                   }
                 },
                 acceptFreelancer(bidID){
-                  window.location.href = `acceptedFreelancer.html?bidID=${bidID}`
+
+                  fetch(acceptFreelancer,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-type": "application/json"
+                            
+                            },
+                            mode: 'cors',
+                            body:JSON.stringify({
+                            biddingID: bidID
+            
+                    })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            result = data.data;
+                            console.log(result);
+                            window.location.href = `successful_job.html`
+                            // 3 cases
+                            if (data.code === 404) {
+                                // no job
+                                this.message = data.message;
+                                console.log(data)
+                            } 
+                            else if(data.code == 500){
+                                this.message = data.message;
+                            }
+                            else {
+                                this.message = data.message
+                            }
+                        }).catch(error => {
+                            console.log(this.message + error);
+                        });
+
                 }
             },
             created () {
