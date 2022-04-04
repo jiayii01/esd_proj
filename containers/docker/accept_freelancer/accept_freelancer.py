@@ -6,13 +6,15 @@ from invokesNotification import MyRequestClass
 import amqp_setup
 import pika
 import json
+import os, sys
+from os import environ
 
 app = Flask(__name__)
 CORS(app)
 
-job_URL = "http://localhost:5001/jobs"
-bidding_URL = "http://localhost:5002/bidding"
-notification_URL = "http://localhost:5003/notification"
+job_URL = "http://jobs:5001/jobs" or environ.get('job_URL')
+bidding_URL = "http://bidding:5002/bidding" or environ.get('bidding_URL')
+notification_URL = "http://notification:5003/notification" or environ.get('shipping_record_URL')
 
 
 @app.route("/accept_freelancer", methods=['POST'])   
@@ -26,10 +28,12 @@ def accept_freelancer():
             #2. Update the bidding status
             newStatus = updateBiddingStatus(data)
             print("\nAccept freelancer")
-            
+            print(newStatus)
+
             # # # do the actual work
             # # # 3. Update job status to "filled"
             jobChosen = newStatus['data']["jobID"]    #chosen jobID
+            print(jobChosen)
             freelancerChosen = newStatus['data']["freelancerID"]   #chosen freelancerID
             print(jobChosen, freelancerChosen)
             result =  updateJobStatus(jobChosen,freelancerChosen)
