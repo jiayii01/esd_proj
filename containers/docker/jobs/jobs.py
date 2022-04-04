@@ -52,8 +52,8 @@ class Job(db.Model):
 
 @app.route("/jobs")
 def get_all():
-    joblist = Job.query.all()
-    if len(joblist):
+    joblist = Job.query.filter_by(status="NEW")
+    if joblist:
         return jsonify(
             {
               "code": 200,
