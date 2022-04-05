@@ -10,7 +10,8 @@ import os, sys
 from os import environ
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 job_URL = "http://jobs:5001/jobs" or environ.get('job_URL')
 bidding_URL = "http://bidding:5002/bidding" or environ.get('bidding_URL')

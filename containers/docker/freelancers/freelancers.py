@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from os import environ
 import requests
-# from flask_cors import CORS
+from flask_cors import CORS
 
 
 # set dbURL=mysql+mysqlconnector://root@localhost:3306/freelancers
@@ -14,6 +14,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # CORS(app)
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 class Freelancer(db.Model):
     __tablename__ = 'freelancers'

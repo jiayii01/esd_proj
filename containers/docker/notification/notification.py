@@ -8,7 +8,8 @@ from invokesNotification import MyRequestClass
 import json
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 
 number =  "+6597277518"  #change this if you want the message to send to your phone
