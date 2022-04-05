@@ -8,8 +8,7 @@ from invokesNotification import MyRequestClass
 import json
 
 app = Flask(__name__)
-# CORS(app)
-cors = CORS(app, resources={r"*": {"origins": "*"}})
+CORS(app)
 
 
 number =  "+6597277518"  #change this if you want the message to send to your phone
@@ -22,7 +21,7 @@ def successful_notification(jobID):
     #os.getenv()
     #freelancer side
     print("here")
-    client = Client("AC075d686f2b7e890f6f730a89037f731b", "00cb3e1d17529296ec27ee6fcaa4ceab",
+    client = Client("AC075d686f2b7e890f6f730a89037f731b", "ba4041c7578006957f466aaaa400dcf8",
                 http_client=my_request_client)
 
     message = client.messages \
